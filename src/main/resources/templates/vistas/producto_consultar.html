@@ -1,0 +1,20 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantillas/principal :: head}"></head>
+<body>
+    <header th:replace="~{plantillas/principal :: header}"></header>
+    <div class="container mt-5" style="width: 700px;">
+        <h4 class="text-secondary mb-4">Consulta de un producto</h4>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-secondary"><b>Id del producto:  </b><i th:text="${producto.id}"></i></li>
+            <li class="list-group-item"><b>Descripción: </b><i th:text="${producto.descripcion}"></i></li>
+            <li class="list-group-item"><b>Existencia: </b><i th:text="${producto.existencia}"></i></li>
+            <li class="list-group-item"><b>Precio: </b><i th:text="${#numbers.formatDecimal(producto.precio, 1, 'COMMA', 2, 'POINT')}"></i></li>
+            <li class="list-group-item"><b>Fecha del último ingreso: </b><i th:text="${#temporals.format(producto.fechaUltIngreso, 'dd/MM/yyy')}"></i></li>
+            <li class="list-group-item"><b>Producto disponible ? </b><i th:text="${producto.disponible ? 'Si' : 'No'}"></i></li>
+            <li class="list-group-item"><b>Categoría: </b><i th:text="${producto.categoria}"></i></li>
+        </ul>
+        <a th:href="@{/productos}" class="btn btn-secondary btn-sm mt-2">regresar</a>
+    </div>
+    <footer class="container mt-3" th:replace="~{plantillas/principal :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantillas/principal :: head}"></head>
+<body>
+    <header th:replace="~{plantillas/principal :: header}"></header>
+    <div class="container mt-5">
+        <h2>Listado de productos</h2>
+
+        <a th:href="@{/nuevoProducto}" class="btn btn-primary btn-sm my-3">Nuevo producto</a>
+
+        <table class="table table-striped table-bordered" th:if="${not #lists.isEmpty(productos)}">
+            <thead>
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th>Descripción</th>
+                    <th class="text-center">Existencia</th>
+                    <th class="text-end">Precio</th>
+                    <th class="text-center">Fecha último ingreso</th>
+                    <th class="text-center">Disponible</th>
+                    <th class="text-center">Categoría</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="prod : ${productos}">
+                    <td class="text-center">
+                        <a th:href="@{/consultar/} + ${prod.id}" class="btn btn-success btn-sm" th:text="${prod.id}"></a>
+                    </td>
+                    <td th:text="${prod.descripcion}"></td>
+                    <td class="text-center" th:text="${prod.existencia}"></td>
+                    <td> <span th:text="${#numbers.formatDecimal(prod.precio, 1, 1)}"></span></td>
+                    <td class="text-center" th:text="${#temporals.format(prod.fechaUltIngreso, 'dd/MM/yyyy')}"></td>
+                    <td class="text-center" th:text="${prod.disponible ? 'Sí' : 'No'}"></td>
+                    <td class="text-center" th:text="${prod.categoria}"></td>
+                    <td class="text-center">
+                        <a th:href="@{/editar/} + ${prod.id}"><i class="bi-pen" style="color: blue"></i></a>
+                        &nbsp;
+                        <a th:href="@{/eliminar/} + ${prod.id}" onclick="return confirm('¿Seguro que quiere eliminar?')"><i class="bi-trash" style="color: indianred"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="alert alert-warning" th:if="${#lists.isEmpty(productos)}">
+            No hay productos para mostrar.
+        </div>
+    </div>
+
+    <footer class="container mt-3" th:replace="~{plantillas/principal :: footer}"></footer>
+</body>
+</html>

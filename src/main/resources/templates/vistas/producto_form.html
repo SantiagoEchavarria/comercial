@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{plantillas/principal :: head}"></head>
+<body>
+    <header th:replace="~{plantillas/principal :: header}"></header>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-secondary">Nuevo producto</h2>
+            </div>
+            <div class="card-body">
+
+                <form method="POST" th:action="@{/procesar}" th:object="${producto}">
+                    
+                            
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        <input type="text" class="form-control form-control-sm" th:field="*{descripcion}"/>
+                        <small class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Existencia</label>
+                        <input type="number" class="form-control form-control-sm" th:field="*{existencia}"/>
+                        <small class="text-danger" th:if="${#fields.hasErrors('existencia')}" th:errors="*{existencia}"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Precio</label> 
+                        <input type="number" class="form-control form-control-sm" th:field="*{precio}"/> 
+                        <small class="text-danger" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"></small>
+                    </div> 
+
+                    <div class="mb-3">
+                        <label class="form-label">Fecha Último Ingreso</label>
+                        <input type="date" class="form-control form-control-sm" th:field="*{fechaUltIngreso}"/>
+                        <small class="text-danger" th:if="${#fields.hasErrors('fechaUltIngreso')}" th:errors="*{fechaUltIngreso}"></small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" th:field="*{disponible}">
+                            <label class="form-check-label" for="disponible">Disponible</label>           
+                            <small class="text-danger" th:if="${#fields.hasErrors('disponible')}" th:errors="*{disponible}"></small>      
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Categoría</label>
+                        <input type="text" class="form-control form-control-sm" th:field="*{categoria}"/>
+                        <small class="text-danger" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}"></small>
+                    </div>
+                                       
+            
+                    <div class="mb-3">
+                        <input type="submit" value="Guardar"  class="btn btn-success" />
+                    </div>
+                </form>                
+            </div>
+        </div>
+    </div>
+    <footer class="container mt-3" th:replace="~{plantillas/principal :: footer}"></footer>
+</body>
+</html>
