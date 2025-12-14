@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+
+<!-- importar la libreria axios desde una Red de Entrega de Contenido o Content Delivery Network (CDN) -->
+<!-- un servicio externo para alojar y distribuir archivos estáticos de tu sitio web: js, css, img, etc -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script th:fragment="script">
+
+    // El evento DOMContentLoaded se activa cuando el documento HTML ya se ha analizado por completo
+    document.addEventListener('DOMContentLoaded', function(){
+        const buscarProducto = document.getElementById('buscar_producto'); 
+        const sugerencias = document.getElementById('sugerencias'); 
+
+        // asigna un evento input a buscarProducto con async/await
+        buscarProducto.addEventListener('input', async function() {
+            const term = buscarProducto.value;
+
+            if (term.length === 0) {
+                sugerencias.style.display = 'none';
+                return; // evita hacer la petición si está vacío
+            }
+
+            try {
+                // llamar a la API con axios usando await
+                const response = await axios.get(`/comercial/cargarproductos/${term}`);
+                mostrarSugerencias(response.data); // los datos están en response.data
+            } catch (error) {
+                console.error('Error recuperando productos:', error);
+            }
+        });
+        
+        // llena y muestra la caja de sugerencias
+        function mostrarSugerencias(data) {
+            sugerencias.innerHTML = ''; // limpiar sugerencias anteriores
+            if (data.length === 0) {
+                sugerencias.style.display = 'none';
+                return;
+            }
+    
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.classList.add('sugerencia-item');
+                div.textContent = item.descripcion;
+                div.addEventListener('click', function() {
+                    selectSugerencia(item);
+                });
+                sugerencias.appendChild(div);
+            });
+    
+            sugerencias.style.display = 'block';
+        } 
+        
+        function selectSugerencia(item) {
+            // validar al agregar un producto
+            if (!item.id || !item.descripcion || item.precio <= 0) {
+                alert("Producto inválido. Por favor selecciona un producto válido.");
+                return;
+            }
+
+            buscarProducto.value = item.descripcion; // asigna la descripción al input
+
+            // si ya existe un detalle con el id del producto que intentamos agregar, incrementar la cantidad
+            if (utils.existeDetalle(item.id)) {
+                utils.incrementarCantidad(item.id, item.precio);
+
+                // limpia el campo  buscarProducto y pone el foco de nuevo en él
+                buscarProducto.value = '';
+                buscarProducto.focus();
+
+                sugerencias.style.display = 'none'; // oculta las sugerencias                
+                return;
+            }
+
+            // reemplaza los parámetros {xxx} de plantilla detalle por los campos del objeto recuperado
+            let detalle = document.getElementById("plantilla_detalle").innerHTML;
+            detalle = detalle.replace(/{ID}/g, item.id);
+            detalle = detalle.replace(/{DESCRIPCION}/g, item.descripcion);
+            detalle = detalle.replace(/{PRECIO}/g, item.precio);
+            // asigna el nuevo detalle a la factura visible
+            document.querySelector("#cargar_detalle tbody").insertAdjacentHTML('beforeend', detalle);
+
+            // después de cargar el nuevo detalle a la factura, calcular el subtotal del detalle
+            utils.calcularSubtotalDetalle(item.id, item.precio, 1);
+
+            // limpia el campo  buscarProducto y pone el foco de nuevo en él
+            buscarProducto.value = '';
+            buscarProducto.focus();
+
+            sugerencias.style.display = 'none'; // oculta las sugerencias
+        }
+        
+        // cierra el div de sugerencias si se hace clic fuera
+        document.addEventListener('click', function(event) {
+            if (!sugerencias.contains(event.target) && event.target !== buscarProducto) {
+                sugerencias.style.display = 'none';
+            }
+        });
+
+    });
+
+    // objeto utils con métodos para cálculos en la factura
+    let utils = {
+        calcularSubtotalDetalle: function(id, precio, cantidad) {
+            document.getElementById("subtotal_detalle_" + id).innerHTML = parseFloat(precio) * parseInt(cantidad);
+            this.calcularSubtotalFactura();
+        },
+
+        existeDetalle: function(id) {
+            let res = false;
+            const detalleIds = document.querySelectorAll('input[name="detalle_id[]"]');
+            detalleIds.forEach(function(input) {
+                if (parseInt(id) === parseInt(input.value)) {
+                    res = true;
+                }
+            });
+            return res;
+        },
+        
+        incrementarCantidad: function(id, precio) {
+            let cantidadInput = document.getElementById("cantidad_" + id);
+            let cantidad = cantidadInput.value ? cantidadInput.value : 0;
+
+            cantidadInput.value = ++cantidad;
+            this.calcularSubtotalDetalle(id, precio, cantidad);
+        },
+
+        eliminarDetalle: function(id) {
+            document.getElementById("fila_" + id).remove();
+            this.calcularSubtotalFactura();
+        },
+
+        calcularSubtotalFactura: function() {
+            let subtotal = 0;
+            const subtotales = document.querySelectorAll('span[id^="subtotal_detalle_"]');
+            subtotales.forEach(function(span) {
+                subtotal += parseInt(span.innerHTML);
+            });
+            document.getElementById("subtotal_factura").innerHTML = subtotal;
+        }
+
+    }
+
+    document.querySelector('form').addEventListener('submit', function(){
+        document.getElementById("plantilla_detalle").remove();
+        return;
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{plantillas/principal :: head}">
+  <style>
+    body {
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+    }
+  </style>	
+</head>
+<body class="d-flex flex-column min-vh-100">
+	<header th:replace="~{plantillas/principal :: header}"></header>
+	
+	<main class="flex-grow-1 d-flex align-items-center justify-content-center">
+		<div class="card shadow-lg border-0 rounded-4 alert alert-primary text-center" style="width: 70%;">
+			<h1 class="text-secondary fw-bold">Facturación</h1>
+		</div>
+	</main>
+	
+	<footer th:replace="~{plantillas/principal :: footer}"></footer>		
+</body>
+</html>

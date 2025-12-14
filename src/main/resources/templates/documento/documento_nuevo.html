@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{plantillas/principal :: head}"></head>
+<body>
+<header th:replace="~{plantillas/principal :: header}"></header>
+
+<div class="container py-4 cw-60">
+    <div class="card bg-light">
+        <div class="card-header">
+            <h3 class="text-secondary" th:text="${titulo}"></h3>
+        </div>
+
+        <div class="card-body">
+
+            <h4 class="card-title text-end">
+                <a th:href="@{'/comercial/clienteconsultar/' + ${cliente.id}}"
+                   class="btn btn-sm btn-light">&laquo; regresar al cliente</a>
+            </h4>
+
+            <form method="post" th:object="${documento}"
+                th:action="@{/comercial/guardardocumento}"
+                enctype="multipart/form-data">
+
+
+                 <!-- Relación con el cliente -->
+                <input type="hidden" th:field="*{cliente.id}" />
+
+                <!-- Cliente -->
+                <div class="mb-3 row">
+                    <label class="col-sm-3 col-form-label">Cliente</label>
+                    <div class="col-sm-9">
+                        <input type="text"
+                            th:value="${cliente.nombreCompleto}"
+                            class="form-control" disabled="disabled"/>
+                    </div>
+                </div>
+
+                <!-- Descripción -->
+                <div class="mb-3 row">
+                    <label class="col-sm-3 col-form-label" for="descripcion">Descripción</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" th:field="*{descripcion}" rows="3"></textarea>
+                    </div>
+                    <small class="text-danger" th:if="${#fields.hasErrors('descripcion')}"
+                        th:errors="*{descripcion}"></small>
+                </div>
+
+                <!-- Archivo -->
+                <div class="mb-3 row">
+                    <label class="col-sm-3 col-form-label" for="file">Archivo (PDF o imagen)</label>
+                    <div class="col-sm-9">
+                        <input type="file" name="file" class="form-control"
+                            accept=".pdf,image/*" required>
+                    </div>
+                    <small class="text-danger" th:if="${error != null}" th:text="${error}"></small>
+                </div>
+
+                <!-- Botón -->
+                <div class="mb-3 row mt-4">
+                    <div class="col-sm-6">
+                        <input type="submit" th:value="${btn_accion}"
+                            class="btn btn-outline-secondary"/>
+                    </div>
+                </div>
+
+               
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{plantillas/principal :: footer}"></footer>
+</body>
+</html>
