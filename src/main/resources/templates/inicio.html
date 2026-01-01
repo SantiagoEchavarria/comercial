@@ -5,17 +5,107 @@
     body {
       background: linear-gradient(to right, #74ebd5, #acb6e5);
     }
-  </style>	
+    .hero-title {
+      font-size: 3rem;
+    }
+    .feature-icon {
+      font-size: 2.5rem;
+    }
+  </style>
 </head>
+
 <body class="d-flex flex-column min-vh-100">
-	<header th:replace="~{plantillas/principal :: header}"></header>
-	
-	<main class="flex-grow-1 d-flex align-items-center justify-content-center">
-		<div class="card shadow-lg border-0 rounded-4 alert alert-primary text-center" style="width: 70%;">
-			<h1 class="text-secondary fw-bold">Facturación</h1>
-		</div>
-	</main>
-	
-	<footer th:replace="~{plantillas/principal :: footer}"></footer>		
+
+<header th:replace="~{plantillas/principal :: header}"></header>
+
+<main class="flex-grow-1">
+
+  <!-- HERO 
+  <section class="container py-5 text-center text-black">
+    <h1 class="hero-title fw-bold">Comercial</h1>
+    <p class="fs-4 mt-3">
+      Plataforma de control de inventarios y generación de reportes
+    </p>
+    <p class="fs-5">
+      Desarrollada para reforzar y practicar los conceptos clave de <strong>Spring Boot</strong>
+    </p>
+  </section>-->
+
+  <!-- DESCRIPCIÓN -->
+  <section class="container">
+    <div class="card shadow-lg border-0 rounded-4 p-5">
+      <h2 class="text-center text-primary fw-bold mb-4">¿Qué puedes hacer con Comercial?</h2>
+
+      <div class="row text-center g-4">
+        <div class="col-md-4">
+          <div class="feature-icon">📦</div>
+          <h5 class="fw-bold mt-2">Gestión de Productos</h5>
+          <p>
+            Administración de productos organizados por categorías, con control de inventario.
+          </p>
+        </div>
+
+        <div class="col-md-4">
+          <div class="feature-icon">👥</div>
+          <h5 class="fw-bold mt-2">Clientes y Facturación</h5>
+          <p>
+            Cada cliente cuenta con sus propias facturas y productos facturados según sus necesidades.
+          </p>
+        </div>
+
+        <div class="col-md-4">
+          <div class="feature-icon">📊</div>
+          <h5 class="fw-bold mt-2">Informes y Reportes</h5>
+          <p>
+            Generación de reportes de productos, facturas y clientes, con opción de descarga.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DETALLES -->
+  <section class="container mt-5">
+    <div class="card shadow border-0 rounded-4 p-5">
+      <h3 class="text-secondary fw-bold mb-3">Funcionalidades principales</h3>
+      <ul class="fs-5">
+        <li>✔️ Listado completo de productos</li>
+        <li>✔️ Facturación a clientes con múltiples productos</li>
+        <li>✔️ Historial de facturas por cliente</li>
+        <li>✔️ Descarga de facturas y reportes</li>
+        <li>✔️ Gestión de archivos propios del cliente</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- USUARIOS -->
+  <section class="container my-5">
+    <div class="card shadow-lg border-0 rounded-4 p-5">
+      <h3 class="text-center text-primary fw-bold mb-4">Control de Usuarios y Roles</h3>
+
+      <div class="row text-center">
+        <div class="col-md-6">
+          <h5 class="fw-bold">Administrador</h5>
+          <p class="mb-1"><strong>Usuario:</strong> admon</p>
+          <p><strong>Contraseña:</strong> Abc123</p>
+        </div>
+
+        <div class="col-md-6">
+          <h5 class="fw-bold">Usuario</h5>
+          <p class="mb-1"><strong>Usuario:</strong> juan</p>
+          <p><strong>Contraseña:</strong> Abc123</p>
+        </div>
+      </div>
+
+      <p class="text-center text-muted mt-4">
+        Cada rol tiene permisos específicos para acceder a las funcionalidades del sistema.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer th:replace="~{plantillas/principal :: footer}"></footer>
+
 </body>
 </html>
